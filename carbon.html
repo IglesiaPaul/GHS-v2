@@ -4,284 +4,94 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Carbon Lab — Global Hemp Service</title>
-  <meta name="description" content="Explore verified hemp-based carbon projects, track MRV, and connect your purchases to measurable outcomes.">
   <style>
-    /* ------------------ Design Tokens ------------------ */
-    :root{
-      --green: #38E2B5;
-      --green-700:#19B895;
-      --purple:#7A5AF8;
-      --purple-100:#F2EEFF;
-      --purple-900:#3A2E7B;
-      --yellow:#FFC940;
+:root{
+  --green:#38E2B5; --green-700:#19B895; --purple:#7A5AF8; --purple-100:#F2EEFF; --purple-900:#3A2E7B; --yellow:#FFC940;
+  --ink-900:#0F172A; --ink-700:#1F2937; --muted:#94A3B8; --white:#FFFFFF; --bg:#0b0e1a;
+  --radius:16px; --radius-lg:28px; --shadow-soft: 0 6px 24px rgba(2,6,23,.24); --shadow: 0 24px 60px rgba(2,6,23,.5);
+  --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px; --space-8:32px; --space-10:40px; --space-16:64px;
+  --fs-0:12px; --fs-1:14px; --fs-2:16px; --fs-3:18px; --fs-4:20px; --fs-5:24px; --fs-6:32px; --fs-7:44px; --fs-8:64px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0;background:var(--bg);color:#E5F5F0;font:400 16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto}
+a{color:inherit;text-decoration:none}
+.container{max-width:1200px;margin:0 auto;padding:0 var(--space-6)}
 
-      --ink-900:#0F172A;
-      --ink-700:#1F2937;
-      --muted:#94A3B8;
-      --white:#FFFFFF;
-      --bg:#0b0e1a; /* deep space */
+/* Header (styles expected by the partial) */
+.site-header{position:sticky;top:0;z-index:1000;background:rgba(7,10,22,.6);backdrop-filter: blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
+.navbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.3px}
+.brand .orb{width:14px;height:14px;border-radius:999px;background:conic-gradient(from 0deg, var(--green), var(--purple), var(--yellow), var(--green));box-shadow:0 0 0 6px rgba(122,90,248,.18), 0 0 24px rgba(56,226,181,.45)}
+.nav {display:none}
+.nav-toggle{background:none;border:1px solid rgba(255,255,255,.12);color:#E6ECFF;border-radius:12px;padding:8px 12px;font-size:18px}
+.nav ul{list-style:none;margin:0;padding:0;display:flex;gap:20px}
+.nav a{color:#CFE7E2;font-weight:600;opacity:.9}
+.nav a.active{opacity:1;text-decoration:underline}
+@media(min-width:980px){ .nav{display:block}.nav-toggle{display:none} }
 
-      --radius:16px;
-      --radius-lg:28px;
-      --shadow-soft: 0 6px 24px rgba(2,6,23,.24);
-      --shadow: 0 24px 60px rgba(2,6,23,.5);
+/* Hero */
+.hero{position:relative;overflow:hidden;padding:calc(var(--space-16) + 24px) 0 var(--space-16)}
+.hero .grid{display:grid;gap:32px;align-items:center}
+@media(min-width:960px){.hero .grid{grid-template-columns: 1.2fr .8fr}}
+.eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(122,90,248,.16);border:1px solid rgba(122,90,248,.35);color:#EDE7FF;padding:6px 10px;border-radius:999px;font-size:var(--fs-1)}
+.h1{font-size: clamp(36px, 4vw, var(--fs-8));line-height:1.05;margin:14px 0 12px}
+.lead{font-size: var(--fs-4);color:#B7D7D0;max-width:720px}
+.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:999px;font-weight:700;border:1px solid transparent;box-shadow: var(--shadow-soft);transition: transform .08s ease, filter .2s ease}
+.btn:active{transform:scale(.98)}
+.btn-primary{background:linear-gradient(180deg,var(--green),#27cc9f);color:#0b1118}
+.btn-ghost{background:rgba(255,255,255,.08);color:#EAF8F3;border-color:rgba(255,255,255,.14)}
+.btn-outline{background:transparent;color:#DDEFF0;border-color:#2dd4bf}
 
-      --space-2:8px; --space-3:12px; --space-4:16px; --space-5:20px; --space-6:24px; --space-8:32px; --space-10:40px; --space-16:64px;
-      --fs-0:12px; --fs-1:14px; --fs-2:16px; --fs-3:18px; --fs-4:20px; --fs-5:24px; --fs-6:32px; --fs-7:44px; --fs-8:64px;
-    }
-    *{box-sizing:border-box}
-    html,body{margin:0;padding:0;background:var(--bg);color:#E5F5F0;font:400 16px/1.6 Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto}
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1200px;margin:0 auto;padding:0 var(--space-6)}
+.nebula{
+  position:absolute; inset:-10% -20% -20% -20%;
+  background:
+    radial-gradient(40% 30% at 15% 20%, rgba(122,90,248,.45) 0%, transparent 60%),
+    radial-gradient(30% 25% at 70% 10%, rgba(56,226,181,.35) 0%, transparent 60%),
+    radial-gradient(45% 30% at 85% 35%, rgba(255,201,64,.25) 0%, transparent 60%);
+  filter: blur(40px) saturate(140%);
+  animation: float 16s ease-in-out infinite alternate;
+  pointer-events:none;
+}
+@keyframes float { 0%{transform:translateY(0)} 100%{transform:translateY(-30px)} }
 
-    /* Header */
-    .site-header{position:sticky;top:0;z-index:1000;background:rgba(7,10,22,.6);backdrop-filter: blur(12px);border-bottom:1px solid rgba(255,255,255,.06)}
-    .navbar{height:72px;display:flex;align-items:center;justify-content:space-between;gap:16px}
-    .brand{display:flex;align-items:center;gap:12px;font-weight:800;letter-spacing:.3px}
-    .brand .orb{width:14px;height:14px;border-radius:999px;background:conic-gradient(from 0deg, var(--green), var(--purple), var(--yellow), var(--green));box-shadow:0 0 0 6px rgba(122,90,248,.18), 0 0 24px rgba(56,226,181,.45)}
-    .nav {display:none}
-    .nav-toggle{background:none;border:1px solid rgba(255,255,255,.12);color:#E6ECFF;border-radius:12px;padding:8px 12px;font-size:18px}
-    .nav ul{list-style:none;margin:0;padding:0;display:flex;gap:20px}
-    .nav a{color:#CFE7E2;font-weight:600;opacity:.9}
-    .nav a.active{opacity:1;text-decoration:underline}
-    @media(min-width:980px){ .nav{display:block}.nav-toggle{display:none} }
+.section{padding: var(--space-16) 0}
+.card{background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.12);
+  border-radius: var(--radius); padding:24px; box-shadow: var(--shadow-soft);}
+.center{text-align:center}
+.muted{color:#A0C0B8}
+.mt-6{margin-top:var(--space-6)} .mt-8{margin-top:var(--space-8)}
 
-    /* Hero */
-    .hero{position:relative;overflow:hidden;padding:calc(var(--space-16) + 24px) 0 var(--space-16)}
-    .hero .grid{display:grid;gap:32px;align-items:center}
-    @media(min-width:960px){.hero .grid{grid-template-columns: 1.2fr .8fr}}
-    .eyebrow{display:inline-flex;gap:8px;align-items:center;background:rgba(56,226,181,.16);border:1px solid rgba(56,226,181,.35);color:#E7FFF9;padding:6px 10px;border-radius:999px;font-size:var(--fs-1)}
-    .h1{font-size: clamp(36px, 4vw, var(--fs-8));line-height:1.05;margin:14px 0 12px}
-    .lead{font-size: var(--fs-4);color:#B7D7D0;max-width:720px}
-    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}
-    .btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;padding:12px 18px;border-radius:999px;font-weight:700;border:1px solid transparent;box-shadow: var(--shadow-soft);transition: transform .08s ease, filter .2s ease}
-    .btn:active{transform:scale(.98)}
-    .btn-primary{background:linear-gradient(180deg,var(--green),#27cc9f);color:#0b1118}
-    .btn-ghost{background:rgba(255,255,255,.08);color:#EAF8F3;border-color:rgba(255,255,255,.14)}
-    .btn-outline{background:transparent;color:#DDEFF0;border-color:#2dd4bf}
-
-    .nebula{
-      position:absolute; inset:-10% -20% -20% -20%;
-      background:
-        radial-gradient(40% 30% at 15% 20%, rgba(122,90,248,.45) 0%, transparent 60%),
-        radial-gradient(30% 25% at 70% 10%, rgba(56,226,181,.35) 0%, transparent 60%),
-        radial-gradient(45% 30% at 85% 35%, rgba(255,201,64,.25) 0%, transparent 60%);
-      filter: blur(40px) saturate(140%);
-      animation: float 16s ease-in-out infinite alternate;
-      pointer-events:none;
-    }
-    @keyframes float { 0%{transform:translateY(0)} 100%{transform:translateY(-30px)} }
-
-    /* Sections */
-    .section{padding: var(--space-16) 0}
-    .grid3{display:grid;gap:24px}
-    @media(min-width:960px){.grid3{grid-template-columns: repeat(3, 1fr)}}
-    .panel{padding:24px;border-radius:var(--radius);border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); box-shadow: var(--shadow-soft)}
-
-    /* Project Cards */
-    .cards{display:grid;gap:24px}
-    @media(min-width:980px){.cards{grid-template-columns: repeat(3, 1fr)}}
-    .card{border-radius:var(--radius);border:1px solid rgba(255,255,255,.12);background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); padding:24px; box-shadow: var(--shadow-soft); transition: transform .2s ease, box-shadow .2s ease}
-    .card:hover{transform: translateY(-4px); box-shadow: var(--shadow)}
-
-    .pill{display:inline-flex;gap:8px;align-items:center;background:rgba(56,226,181,.14);border:1px solid rgba(56,226,181,.35);color:#E1FFF7;padding:6px 10px;border-radius:999px;font-size:var(--fs-1)}
-
-    .kv{display:grid;grid-template-columns:auto 1fr;gap:8px 12px;align-items:center;margin-top:12px}
-    .kv b{color:#EBFFF9}
-    .kv small{color:#9bbdb6}
-
-    /* Tabs */
-    .tabs{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-    .tab{padding:8px 12px;border-radius:999px;border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.06);cursor:pointer}
-    .tab.active{border-color: rgba(56,226,181,.45); box-shadow: inset 0 0 0 2px rgba(56,226,181,.35)}
-
-    /* Footer */
-    .site-footer{border-top:1px solid rgba(255,255,255,.08);padding:32px 0;color:#BFDAD3}
-    .footer-inner{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;align-items:center}
-
-    .center{text-align:center}
-    .mt-2{margin-top:var(--space-2)} .mt-4{margin-top:var(--space-4)} .mt-6{margin-top:var(--space-6)} .mt-8{margin-top:var(--space-8)}
-  </style>
+.site-footer{border-top:1px solid rgba(255,255,255,.08);padding:32px 0;color:#BFDAD3}
+.footer-inner{display:flex;gap:16px;justify-content:space-between;flex-wrap:wrap;align-items:center}
+</style>
 </head>
 <body>
-  <header class="site-header">
-    <div class="container navbar">
-      <a class="brand" href="/"><span class="orb"></span> Global Hemp Service</a>
-      <button class="nav-toggle" aria-label="Menu">Menu</button>
-      <nav class="nav" aria-label="Main">
-        <ul>
-          <li><a href="/marketplace.html">Marketplace</a></li>
-          <li><a href="/wallet.html">Wallet</a></li>
-          <li><a href="/carbon.html">Carbon Lab</a></li>
-          <li><a href="/knowledge.html">Knowledge</a></li>
-          <li><a href="/partner.html">Partner</a></li>
-          <li><a href="/about.html">About</a></li>
-          <li><a href="/contact.html">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
+  <header class="site-header"><div class="container navbar"><a class="brand" href="/"><span class="orb"></span> Global Hemp Service</a><button class="nav-toggle" aria-label="Menu">Menu</button><nav class="nav" aria-label="Main"><ul><li><a href="/marketplace.html">Marketplace</a></li><li><a href="/services.html">Services</a></li><li><a href="/wallet.html">Wallet</a></li><li><a href="/carbon.html">Carbon Lab</a></li><li><a href="/knowledge.html">Knowledge</a></li><li><a href="/partner.html">Partner</a></li><li><a href="/about.html">About</a></li><li><a href="/contact.html">Contact</a></li></ul></nav></div></header>
   <main>
-    <!-- HERO -->
     <section class="hero">
       <div class="nebula"></div>
       <div class="container grid">
         <div>
           <span class="eyebrow">Carbon Lab</span>
-          <h1 class="h1">Turn purchases into <span style="color:var(--green)">measurable carbon outcomes</span>.</h1>
-          <p class="lead">We channel marketplace activity into projects like hempcrete retrofits and biochar‑to‑graphite pilots, with MRV you can read and share.</p>
-          <div class="actions">
-            <a class="btn btn-primary" href="/marketplace.html">Shop to Support</a>
-            <a class="btn btn-ghost" href="/wallet.html">View Your Impact</a>
-          </div>
-        </div>
-        <div>
-          <div class="panel">
-            <div class="tabs">
-              <div class="tab active" data-tab="mrv">MRV</div>
-              <div class="tab" data-tab="method">Methodology</div>
-              <div class="tab" data-tab="faq">FAQ</div>
-            </div>
-            <div id="tab-mrv" class="mt-6">
-              <div class="kv"><b>Data Sources</b><small>Vendors, shipping, category multipliers</small></div>
-              <div class="kv"><b>Verification</b><small>Partner labs + on‑site audits</small></div>
-              <div class="kv"><b>Proof</b><small>Batch receipts & project attestations</small></div>
-            </div>
-            <div id="tab-method" class="mt-6" style="display:none">
-              <p class="mt-2" style="color:#C9E6E1">We map each purchase to a category factor, then allocate pooled funds to projects with measurable carbon storage (e.g., mineralization in hempcrete, stable carbon in biochar). We prioritize permanence, additionality, and leakage checks.</p>
-            </div>
-            <div id="tab-faq" class="mt-6" style="display:none">
-              <p class="mt-2" style="color:#C9E6E1"><b>Is this certified?</b> We’re integrating with recognized standards where applicable, while publishing transparent project dossiers you can review.</p>
-            </div>
-          </div>
+          <h1 class="h1">Turn purchases into measurable carbon outcomes.</h1>
+          <p class="lead">Marketplace activity directs funds to vetted, measurable projects with MRV you can audit.</p>
+          <div class="actions"><a class="btn btn-primary" href="/marketplace.html">Enter Marketplace</a><a class="btn btn-ghost" href="/wallet.html">Open Wallet</a></div>
         </div>
       </div>
     </section>
+    
+<section class="section"><div class="container">
+  <div class="card"><h3>Active projects</h3><p class="muted">Hempcrete retrofit • Biochar → Graphite • Soil Health Co‑ops</p></div>
+  <div style="display:grid;gap:24px;margin-top:24px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))">
+    <div class="card"><h4>Hempcrete Retrofit</h4><p class="muted">Store CO₂ in buildings.</p></div>
+    <div class="card"><h4>Biochar Graphite</h4><p class="muted">Stable carbon with industrial use.</p></div>
+    <div class="card"><h4>Soil Co‑ops</h4><p class="muted">Yield resilience & soil carbon.</p></div>
+  </div>
+</div></section>
 
-    <!-- ACTIVE PROJECTS -->
-    <section class="section">
-      <div class="container">
-        <h2 class="h1" style="font-size:var(--fs-6);margin:0 0 16px">Active projects</h2>
-        <div class="cards">
-          <article class="card">
-            <span class="pill">Hempcrete Retrofit</span>
-            <h3 style="margin:12px 0 6px">Community Center Thermal Upgrade</h3>
-            <p style="color:#B7D7D0">Replacing insulation with hempcrete panels to reduce energy demand and store carbon in mineralized matrix.</p>
-            <div class="kv">
-              <b>Impact</b><small>~12.4 kg CO₂e / m² stored</small>
-              <b>Status</b><small>Pilot build • phase 2</small>
-              <b>Funding</b><small>37% pooled from purchases</small>
-            </div>
-            <div class="actions mt-6">
-              <a class="btn btn-outline" href="#">View dossier</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <span class="pill">Biochar → Graphite</span>
-            <h3 style="margin:12px 0 6px">EV‑Grade Graphite Pilot</h3>
-            <p style="color:#B7D7D0">Converting high‑temperature biochar into conductive graphite for battery supply chains.</p>
-            <div class="kv">
-              <b>Impact</b><small>Stable carbon with industrial use</small>
-              <b>Status</b><small>Lab‑verified • scaling</small>
-              <b>Funding</b><small>22% pooled from purchases</small>
-            </div>
-            <div class="actions mt-6">
-              <a class="btn btn-outline" href="#">View dossier</a>
-            </div>
-          </article>
-
-          <article class="card">
-            <span class="pill">Soil Health Co‑ops</span>
-            <h3 style="margin:12px 0 6px">Farmer Network for Rotations</h3>
-            <p style="color:#B7D7D0">Supporting regional hemp rotations with soil monitoring, biomass valorization, and farmer training.</p>
-            <div class="kv">
-              <b>Impact</b><small>Yield resilience & soil carbon</small>
-              <b>Status</b><small>Onboarding farms</small>
-              <b>Funding</b><small>16% pooled from purchases</small>
-            </div>
-            <div class="actions mt-6">
-              <a class="btn btn-outline" href="#">View dossier</a>
-            </div>
-          </article>
-        </div>
-      </div>
-    </section>
-
-    <!-- REPORTING & SHARE -->
-    <section class="section">
-      <div class="container grid3">
-        <div class="panel">
-          <h3 style="margin:0 0 8px;font-size:var(--fs-5);color:#EBFFF9">Your report</h3>
-          <p class="mt-2" style="color:#C9E6E1">Link your wallet to get a monthly impact summary (WETAS flows, project allocation, estimated CO₂e).</p>
-          <div class="actions mt-6">
-            <a class="btn btn-primary" href="/wallet.html">Connect Wallet</a>
-          </div>
-        </div>
-        <div class="panel">
-          <h3 style="margin:0 0 8px;font-size:var(--fs-5);color:#EBFFF9">Transparency</h3>
-          <p class="mt-2" style="color:#C9E6E1">Every project publishes inputs, factors, and attestations. You can browse raw docs in each dossier.</p>
-          <div class="actions mt-6">
-            <a class="btn btn-outline" href="#">Browse Dossiers</a>
-          </div>
-        </div>
-        <div class="panel">
-          <h3 style="margin:0 0 8px;font-size:var(--fs-5);color:#EBFFF9">Share your impact</h3>
-          <p class="mt-2" style="color:#C9E6E1">Generate a social card from your wallet stats to inspire your crew.</p>
-          <div class="actions mt-6">
-            <a class="btn btn-ghost" href="/wallet.html">Open Wallet</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <section class="container center" style="padding:80px 0">
-      <h2 class="h1" style="font-size:var(--fs-6)">Ready to turn shopping into climate action?</h2>
-      <p style="color:#B7D7D0">Enter the marketplace and watch your WETAS fuel real projects.</p>
-      <div class="actions" style="justify-content:center;margin-top:16px">
-        <a class="btn btn-primary" href="/marketplace.html">Start Shopping</a>
-        <a class="btn btn-ghost" href="/about.html">How it works</a>
-      </div>
-    </section>
   </main>
-
-  <footer class="site-footer">
-    <div class="container footer-inner">
-      <div>© 2025 Global Hemp Service — Built for good.</div>
-      <nav><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/cookies.html">Cookies</a></nav>
-    </div>
-  </footer>
-
-  <script>
-    // Simple nav toggle & active link + tabs
-    (function(){
-      const toggle = document.querySelector('.nav-toggle');
-      const nav = document.querySelector('.nav');
-      if(toggle && nav){ toggle.addEventListener('click', ()=>{
-        nav.style.display = (nav.style.display === 'block') ? 'none' : 'block';
-      });}
-      const here = location.pathname.replace(/\\/$/,'') || '/';
-      document.querySelectorAll('.nav a').forEach(a=>{
-        const path = new URL(a.getAttribute('href'), location.origin).pathname.replace(/\\/$/,'') || '/';
-        if(path === here){ a.classList.add('active'); }
-      });
-
-      // Tabs
-      const tabs = document.querySelectorAll('.tab');
-      const views = {
-        mrv: document.getElementById('tab-mrv'),
-        method: document.getElementById('tab-method'),
-        faq: document.getElementById('tab-faq')
-      };
-      tabs.forEach(t=>t.addEventListener('click', ()=>{
-        tabs.forEach(x=>x.classList.remove('active'));
-        t.classList.add('active');
-        Object.values(views).forEach(v=>v.style.display='none');
-        const key = t.dataset.tab;
-        if(views[key]) views[key].style.display='block';
-      }));
-    })();
-  </script>
+  <footer class="site-footer"><div class="container footer-inner"><div>© 2025 Global Hemp Service — Built for good.</div><nav><a href="/privacy.html">Privacy</a> · <a href="/terms.html">Terms</a> · <a href="/cookies.html">Cookies</a></nav></div></footer>
+  <script src="/assets/js/header-autoload.js" defer></script>
 </body>
 </html>

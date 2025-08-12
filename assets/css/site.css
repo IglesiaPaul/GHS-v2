@@ -1,0 +1,13 @@
+/* site.css — Page-specific helpers and theme accents */
+.theme-market .hero::before {
+  background: radial-gradient(60% 60% at 20% 30%, var(--purple) 0%, transparent 60%),
+              radial-gradient(40% 40% at 80% 10%, rgba(56,226,181,.5) 0%, transparent 60%);
+}
+.theme-site .hero::before {
+  background: radial-gradient(60% 60% at 20% 30%, var(--green) 0%, transparent 60%),
+              radial-gradient(40% 40% at 80% 10%, var(--purple) 0%, transparent 60%);
+}
+.theme-wallet .hero::before {
+  background: radial-gradient(60% 60% at 20% 30%, var(--yellow) 0%, transparent 60%),
+              radial-gradient(40% 40% at 80% 10%, var(--green) 0%, transparent 60%);
+}

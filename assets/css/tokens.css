@@ -1,0 +1,43 @@
+/* tokens.css — Global Hemp Service (Design Tokens) */
+:root{
+  /* Brand */
+  --green: #38E2B5;
+  --green-700: #19B895;
+  --purple: #7A5AF8;
+  --purple-100: #F2EEFF;
+  --purple-900: #3A2E7B;
+  --yellow: #FFC940;
+
+  /* Neutrals */
+  --ink-900: #0F172A;
+  --ink-700: #1F2937;
+  --ink-600: #334155;
+  --muted: #64748B;
+  --white: #FFFFFF;
+  --bg: #F7FAFF;
+
+  /* Radii */
+  --radius-sm: 8px;
+  --radius: 16px;
+  --radius-lg: 24px;
+
+  /* Spacing */
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-8: 32px; --space-10: 40px; --space-16: 64px;
+
+  /* Type scale */
+  --fs-0: 12px; --fs-1: 14px; --fs-2: 16px; --fs-3: 18px;
+  --fs-4: 20px; --fs-5: 24px; --fs-6: 32px; --fs-7: 40px; --fs-8: 56px;
+
+  /* Shadows */
+  --shadow-soft: 0 2px 10px rgba(15, 23, 42, .06);
+  --shadow: 0 8px 28px rgba(15, 23, 42, .10);
+
+  /* Accent (contextual) */
+  --accent: var(--purple);
+}
+
+/* Contexts */
+.theme-market { --accent: var(--purple); }
+.theme-site { --accent: var(--green); }
+.theme-wallet { --accent: var(--yellow); }

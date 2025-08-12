@@ -1,28 +1,37 @@
-// header-autoload.js — drop this on any page to replace its header with /partials/header.html
-(function(){
-  function replaceHeader(html){
-    var tmp = document.createElement('div'); tmp.innerHTML = html.trim();
-    var newHeader = tmp.firstElementChild;
-    var oldHeader = document.querySelector('header.site-header') || document.getElementById('site-header');
-    if(oldHeader){
-      oldHeader.replaceWith(newHeader);
-      // also bring over the inline script that came with the header
-      var scripts = tmp.querySelectorAll('script');
-      scripts.forEach(function(s){
-        var tag = document.createElement('script');
-        if(s.src){ tag.src = s.src; } else { tag.textContent = s.textContent; }
-        document.body.appendChild(tag);
-      });
-    } else {
-      // if no header found, insert at top of body
-      document.body.insertAdjacentHTML('afterbegin', html);
-    }
-  }
+// header-autoload.js — injects /partials/header.html onto any page and wires basic behavior
+(async function(){
+  try{
+    const res = await fetch('/partials/header.html', {cache:'no-cache'});
+    if(!res.ok) throw new Error('Header partial not found');
+    const html = await res.text();
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+    const header = doc.body.firstElementChild;
 
-  fetch('/partials/header.html', {cache:'no-store'}).then(function(r){
-    if(!r.ok) throw new Error('Header not found');
-    return r.text();
-  }).then(replaceHeader).catch(function(err){
-    console.warn('Header autoload failed:', err.message);
-  });
+    let mount = document.querySelector('header.site-header') || document.getElementById('site-header');
+    if(mount){
+      mount.replaceWith(header);
+    }else{
+      document.body.insertAdjacentElement('afterbegin', header);
+    }
+
+    // Mobile toggle
+    const toggle = document.querySelector('.nav-toggle');
+    const nav = document.querySelector('.nav');
+    if(toggle && nav){
+      toggle.addEventListener('click', ()=>{
+        const shown = nav.style.display === 'block';
+        nav.style.display = shown ? 'none' : 'block';
+      });
+    }
+
+    // Active link highlight
+    const here = location.pathname.replace(/\/$/,'') || '/';
+    document.querySelectorAll('.nav a').forEach(a=>{
+      const path = new URL(a.getAttribute('href'), location.origin).pathname.replace(/\/$/,'') || '/';
+      if(path===here){ a.classList.add('active'); }
+    });
+  }catch(e){
+    console.error('Header autoload failed:', e);
+  }
 })();
